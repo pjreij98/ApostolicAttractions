@@ -28,36 +28,28 @@ const OnBoarding = ({ navigation }) => {
                         height: '100%',
                         backgroundColor: COLOURS.onBoardCardBG,
                         borderRadius: 20,
+                        alignItems: 'center'
                     }}>
-                        <Image source={require("../../../images/authentication/notesbg.png")} style={{ width: '100%', aspectRatio: 1 / 1 }} />
+                        <Image source={require("../../../images/authentication/StPeterandPaul.jpg")} style={{ width: '300', height: 300, aspectRatio: 1 / 1 }} />
                     </View>
                 </View>
                 <View style={{
                     width: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: 40,
-                    marginBottom: 20
+                    marginTop: 5,
+                    marginBottom: 20,
                 }}>
                     <Text
                         style={{
-                            fontSize: 24,
+                            fontSize: 36,
                             color: COLOURS.black,
                             fontWeight: '800',
                             letterSpacing: 1,
+                            textAlign: 'center',
                         }}
                     >
-                        Simplify Your Notes
-                    </Text>
-                    <Text
-                        style={{
-                            fontSize: 24,
-                            color: COLOURS.black,
-                            fontWeight: '800',
-                            letterSpacing: 1,
-                        }}
-                    >
-                        Boost Your Productivity
+                        Where traditional believers meet their match.
                     </Text>
                 </View>
                 <View
@@ -65,81 +57,75 @@ const OnBoarding = ({ navigation }) => {
                         width: '100%',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        marginBottom: 40,
+                        marginBottom: 20,
+                    }}
+                >
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("SignUp")}
+                        activeOpacity={0.8}
+                        style={{
+                            width: '90%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingVertical: 16,
+                            backgroundColor: COLOURS.black,
+                            borderRadius: 30
+                        }}>
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                color: COLOURS.white,
+                                fontWeight: '600'
+                            }}
+                        >
+                            Register
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("SignIn")}
+                        activeOpacity={0.8}
+                        style={{
+                            width: '90%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingVertical: 16,
+                            backgroundColor: 'skyblue',
+                            borderRadius: 30,
+                            borderWidth: 2,
+                            borderColor: COLOURS.white
+                        }}>
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                color: COLOURS.black,
+                                fontWeight: '600'
+                            }}
+                        >
+                            Sign In
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={{
+                        width: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: 40,
                     }}
                 >
                     <Text
                         style={{
-                            color: COLOURS.black,
+                            color: 'gray',
                         }}
                     >
-                        Effortless Note-Taking and Seamless
+                        By Continuing you agree to the Terms and Conditions
                     </Text>
-                    <Text
-                        style={{
-                            color: COLOURS.black,
-                        }}
-                    >
-                        Organization for Productivity Enthusiasts
-                    </Text>
-                </View>
-                <View style={{
-                    paddingHorizontal: 40,
-                    marginTop: 60,
-                }}>
-                    <View
-                        style={{
-                            width: '100%',
-                            flexDirection: 'row'
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate("SignUp")}
-                            activeOpacity={0.8}
-                            style={{
-                                width: '50%',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                paddingVertical: 16,
-                                backgroundColor: COLOURS.white,
-                                borderTopLeftRadius: 10,
-                                borderBottomLeftRadius: 10,
-                            }}>
-                            <Text
-                                style={{
-                                    fontSize: 14,
-                                    color: COLOURS.black,
-                                    fontWeight: '600'
-                                }}
-                            >
-                                Register
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate("SignIn")}
-                            activeOpacity={0.8}
-                            style={{
-                                width: '50%',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                paddingVertical: 16,
-                                backgroundColor: COLOURS.transparent,
-                                borderBottomRightRadius: 10,
-                                borderTopRightRadius: 10,
-                                borderWidth: 2,
-                                borderColor: COLOURS.white
-                            }}>
-                            <Text
-                                style={{
-                                    fontSize: 14,
-                                    color: COLOURS.black,
-                                    fontWeight: '600'
-                                }}
-                            >
-                                SignIn
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
             </LinearGradient>
 

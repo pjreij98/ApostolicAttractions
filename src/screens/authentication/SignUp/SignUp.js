@@ -1,8 +1,9 @@
-import { View, Text, TouchableOpacity, ScrollView, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, TextInput, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import COLOURS from '../../../constants/COLOURS'
 import Ionic from 'react-native-vector-icons/Ionicons'
+import { CreateAccountWithEmailAndPassword, SignInWithGoogle, signOutUser } from '../../../utilities/Utilities'
 
 const SignUp = ({ navigation }) => {
 
@@ -49,13 +50,30 @@ const SignUp = ({ navigation }) => {
         } else {
             setErrors({});
             setShowErrors(false);
-            console.log("Registered")
+            handleSignIn(email,password);
         }
+    }
+
+    const handleSignIn = (email, password) => {
+        CreateAccountWithEmailAndPassword({email,password}).then(() => {
+            ToastAndroid.show("Account Created", ToastAndroid.SHORT)
+        }).catch(err => {
+            if(err.code === "auth/email-already-in-use") {
+                return setErrors({email: "Email already in use"})
+            }
+            if(err.code === "auth/invalid-email") {
+                return setErrors({email: "Email is invalid"})
+            }
+            setErrors({})
+            setShowErrors(false)
+            console.log(err)
+        })
     }
 
     const LoginWithIcon = ({ iconName, onPress, buttonTitle }) => {
         return (
             <TouchableOpacity
+                onPress={onPress}
                 activeOpacity={0.8}
                 style={{
                     width: '40%',
@@ -184,6 +202,7 @@ const SignUp = ({ navigation }) => {
                                 keyboardType='visible-password'
                                 value={password}
                                 onChangeText={e => setPassword(e)}
+                                maxLength={15}
                                 style={{
                                     paddingVertical: 10,
                                     paddingHorizontal: 20,
@@ -213,6 +232,7 @@ const SignUp = ({ navigation }) => {
                                 keyboardType='visible-password'
                                 value={confirmPassword}
                                 onChangeText={e => setConfirmPassword(e)}
+                                maxLength={15}
                                 style={{
                                     paddingVertical: 10,
                                     paddingHorizontal: 20,
@@ -297,13 +317,12 @@ const SignUp = ({ navigation }) => {
                         style={{
                             flexDirection: 'row',
                             alignItems: 'center',
-                            justifyContent: 'space-evenly',
+                            justifyContent: 'space-around',
                             marginTop: 10,
                             marginBottom: 40,
                         }}
                     >
-                        <LoginWithIcon iconName='logo-google' onPress={() => console.log('google')} buttonTitle='Google' />
-                        <LoginWithIcon iconName='person' onPress={() => console.log('Anonymous')} buttonTitle='Anonymous' />
+                        <LoginWithIcon iconName='logo-google' onPress={() => SignInWithGoogle().then(() => ToastAndroid.show("Signed In", ToastAndroid.SHORT))} buttonTitle='Google' />
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.8}

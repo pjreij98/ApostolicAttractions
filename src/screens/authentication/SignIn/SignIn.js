@@ -9,7 +9,7 @@ const SignIn = ({ navigation }) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [hidePassword, setHidePassword] = useState(false);
+    const [hidePassword, setHidePassword] = useState(true);
 
     const [showErrors, setShowErrors] = useState(false)
     const [errors, setErrors] = useState({})
@@ -199,6 +199,7 @@ const SignIn = ({ navigation }) => {
                                     secureTextEntry={hidePassword ? true : false}
                                     value={password}
                                     onChangeText={e => setPassword(e)}
+                                    maxLength={15}
                                     style={{
                                         paddingVertical: 10,
                                         paddingHorizontal: 20,
@@ -215,6 +216,7 @@ const SignIn = ({ navigation }) => {
                                     activeOpacity={0.9}
                                     style={{
                                         paddingHorizontal: 10,
+                                        paddingRight: 14,
                                     }}>
                                         <Ionic name={hidePassword ? "eye-sharp" : "eye-off-sharp"} style={{
                                             fontSize: 20, color: COLOURS.black
@@ -296,17 +298,16 @@ const SignIn = ({ navigation }) => {
                         style={{
                             flexDirection: 'row',
                             alignItems: 'center',
-                            justifyContent: 'space-evenly',
+                            justifyContent: 'space-around',
                             marginTop: 10,
                             marginBottom: 40,
                         }}
                     >
                         <LoginWithIcon iconName='google' onPress={() => console.log('google')} buttonTitle='Google' />
-                        <LoginWithIcon iconName='people-carry' onPress={() => console.log('Anonymous')} buttonTitle='Anonymous' />
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        onPress={() => navigation.navigate('SignIn')}
+                        onPress={() => navigation.navigate('SignUp')}
                         style={{
                             width: '100%',
                             alignItems: 'center',

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "264575885411",
+    "project_id": "apostolic-attractions",
+    "storage_bucket": "apostolic-attractions.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264575885411:android:a572f2ef0b23a20609d856",
+        "android_client_info": {
+          "package_name": "com.apostolicattraction"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264575885411-90uj6i14692mljkos1vc3kcuiq89htou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apostolicattraction",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "264575885411-sm1dvm252etoocaqengea7b5v0k85221.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpipLTsP2rANSRWcGv_JhauHDUDQhvNxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264575885411-sm1dvm252etoocaqengea7b5v0k85221.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
