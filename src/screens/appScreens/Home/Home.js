@@ -1,13 +1,15 @@
-import { View, Text, StatusBar, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react'
-import COLOURS from '../../../constants/COLOURS'
-import LinearGradient from 'react-native-linear-gradient'
-import { signOutUser } from '../../../utilities/Utilities'
-import auth from '@react-native-firebase/auth'
-import MatchSwiper from '../../../components/MatchSwiper'
-
+import { View, Text, StatusBar, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import COLOURS from '../../../constants/COLOURS';
+import LinearGradient from 'react-native-linear-gradient';
+import { signOutUser } from '../../../utilities/Utilities';
+import auth from '@react-native-firebase/auth';
+import MatchSwiper from '../../../components/MatchSwiper';
+import Geolocation from 'react-native-geolocation-service';
+import { getMatchPool } from '../../../controllers/FirestoreController';
 
 const Home = () => {
+
     const handleSignOut = () => {
         try {
             signOutUser()
@@ -17,13 +19,78 @@ const Home = () => {
         }
     }
 
+
     const [matches, setMatches] = useState([])
     const [cardIndex, setCardIndex] = useState(0)
     const [userIdToken, setUserIdToken] = useState("")
-
-
+    const [location, setLocation] = useState();
+    
+    const getLocation = () => {
+        const options = {
+            //won't return until has location
+            timeout: 50000,
+            enableHighAccuracy: true,
+            //can pull cached locations up to a day old
+            maximumAge: 86400000
+        }
+        const callback = (position) => {
+            setLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude })
+        }
+        const errorHandler = (err) => {
+            //console.log(err)
+            setError(err)
+        }
+        Geolocation.getCurrentPosition(callback, errorHandler, options)
+        // console.log(location)
+    }
+    useEffect(() => {
+        async function fetchMatches() {
+            try {
+                //only get cached pool if not reloading
+                if (matches.length === 0) {
+                    // const result = await checkCachedMatchPool(userState.firebaseUser.uid)
+                    // if (result) {
+                        const matchPool = await getCachedMatchPool(userState.firebaseUser.uid)
+                        if (matchPool) {
+                            setMatches(matchPool)
+                        }
+                        return
+                    // }
+                }
+                await getPool()
+            }
+            catch (err) {
+                setMatches([])
+                setLoading(false)
+            }
+        }
+        if (location) {
+            fetchMatches()
+            // console.log(location)
+            setCardIndex(0)
+        }
+    }, [location])
+    const getPool = async () => {
+        try {
+            setNoMoreMatches(false)
+            // console.log(userState.idToken)
+            const matchPool = await getMatchPool(user.uid, location, userIdToken)
+            if (matchPool.length === 0) {
+                // setNoMoreMatches(true)
+                setMatches([])
+                // setLocationUpdated(false)
+            }
+            else {
+                // setNoMoreMatches(false)
+                setMatches(matchPool)
+                // setLocationUpdated(false)
+            }
+        }
+        catch {
+            setMatches([])
+        }
+    }
     const user = auth().currentUser;
-
     useEffect(async () => {
         await setUserIdToken(user.getIdToken());
     }, [])

@@ -21,6 +21,7 @@ export async function createUserDocument(uid, token) {
                     company: '',
                     education: '',
                     hometown: '',
+                    physicalActivity: '',
                     name: {
                         first: '',
                         last: '',
@@ -119,7 +120,7 @@ export async function createUserDocument(uid, token) {
             }
         }
 
-        const res = await axios.post(`http://192.168.5.136:8080/createUser`, params, { withCredentials: true})
+        const res = await axios.post(`http://192.168.5.136:8080/createUser`, params, { withCredentials: true })
         // const res = await axios.post(`http://10.0.0.199:8080/createUser`, params, { withCredentials: true})
         // const res = await axios.post(`${SERVER_URL}/createUser`, params, {
         //     withCredentials: true,
@@ -136,7 +137,75 @@ export async function createUserDocument(uid, token) {
 const handleError = err => {
     console.log(err);
 };
+export async function updateMatchPreferences(uid, preferenceData, token) {
+    let params = { uid: uid, token: token };
 
+    const batch = firestore().batch();
+    const docRef = firestore()
+        .collection('matchPreferences')
+        .doc(uid);
+//for filter screen, preferenceData for filtering will be the following:
+//denomination, age, children, church activity, drink, smoke, physical activity level, education,
+    if (preferenceData.partner) {
+        batch.update(docRef, { partner: preferenceData.partner });
+        params.partner = preferenceData.partner;
+    }
+
+    if (preferenceData.level) {
+        batch.update(docRef, { level: preferenceData.level });
+        params.level = preferenceData.level;
+    }
+
+    if (preferenceData.climbingType) {
+        batch.update(docRef, { climbingType: preferenceData.climbingType });
+        params.climbingType = preferenceData.climbingType;
+    }
+
+    if (preferenceData.daysSelected) {
+        batch.update(docRef, { daysSelected: preferenceData.daysSelected });
+        params.daysSelected = preferenceData.daysSelected;
+    }
+
+    if (preferenceData.timesSelected) {
+        batch.update(docRef, { timesSelected: preferenceData.timesSelected });
+        params.timesSelected = preferenceData.timesSelected;
+    }
+
+    if (preferenceData.agesSelected) {
+        batch.update(docRef, { agesSelected: preferenceData.agesSelected });
+        params.agesSelected = preferenceData.agesSelected;
+    }
+
+    if (preferenceData.age) {
+        batch.update(docRef, { age: preferenceData.age });
+        params.age = preferenceData.age;
+    }
+
+    if (preferenceData.sex) {
+        batch.update(docRef, { sex: preferenceData.sex });
+        params.sex = preferenceData.sex;
+    }
+
+    try {
+        await batch.commit();
+        // const res = await axios.post(`http://localhost:8080/matchPreferences`, params, { withCredentials: true })
+        const res = await axios.post(`${SERVER_URL}/matchPreferences`, params, {
+            withCredentials: true,
+        });
+
+        return true;
+        // TODO: save data on server
+
+        // if (res.status == 200) {
+        //   return true;
+        // } else {
+        //   return false;
+        // }
+    } catch (err) {
+        //console.log("error: " + err)
+        return true;
+    }
+}
 export async function updateProfileInfo(uid, profileData) {
     const batch = firestore().batch();
     const docRef = firestore()
@@ -181,5 +250,32 @@ export async function updateProfileInfo(uid, profileData) {
         alert(
             "Error updating your profile. Make sure you're connected to the Internet.",
         );
+    }
+
+}
+export async function getMatchPool(uid, location, token) {
+    try {
+        const params = {
+            uid: uid,
+            location: { longitude: location.longitude, latitude: location.latitude },
+            token: token,
+        };
+
+        // console.log("IDTOKEN: " + params.token);
+
+        // const res = await axios.post('http://192.168.5.136:8080/matchPool', params, { withCredentials: true })
+        const res = await axios.post('http://192.168.68.64:8080/matchPool', params, { withCredentials: true })
+
+        // const res = await axios.post(`${SERVER_URL}/matchPool`, params, {
+        //     withCredentials: true,
+        // });
+
+        if (res.data.matchPool.length) {
+            return res.data.matchPool;
+        } else {
+            return [];
+        }
+    } catch (err) {
+        return [];
     }
 }
