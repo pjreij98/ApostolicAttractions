@@ -1,9 +1,10 @@
-import { View, Text, TouchableOpacity, ScrollView, TextInput } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, TextInput, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import COLOURS from '../../../constants/COLOURS'
 import Ionic from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { SignInWithEmailAndPassword, SignInWithGoogle } from '../../../utilities/Utilities'
 
 const SignIn = ({ navigation }) => {
 
@@ -42,13 +43,30 @@ const SignIn = ({ navigation }) => {
         } else {
             setErrors({});
             setShowErrors(false);
-            console.log("Signed In")
+            handleSignIn({email, password});
         }
+    }
+
+    const handleSignIn = ({email, password}) => {
+        SignInWithEmailAndPassword({email, password}).then(() => {
+            ToastAndroid.show("Logged In", ToastAndroid.SHORT)
+        }).catch(error => {
+            if(error.code === "auth/user-not-found") {
+                setErrors({email: "User not found"})
+                return
+            }
+            if(error.code === "auth/wrong-password") {
+                setErrors({password: "Password was incorrect"})
+                return
+            }
+        }
+        )
     }
 
     const LoginWithIcon = ({ iconName, onPress, buttonTitle }) => {
         return (
             <TouchableOpacity
+                onPress={onPress}
                 activeOpacity={0.8}
                 style={{
                     width: '40%',
@@ -303,7 +321,7 @@ const SignIn = ({ navigation }) => {
                             marginBottom: 40,
                         }}
                     >
-                        <LoginWithIcon iconName='google' onPress={() => console.log('google')} buttonTitle='Google' />
+                        <LoginWithIcon iconName='google' onPress={() => SignInWithGoogle().then(() => ToastAndroid.show("Signed In With Google", ToastAndroid.SHORT))} buttonTitle='Google' />
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.8}

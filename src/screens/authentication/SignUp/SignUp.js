@@ -322,7 +322,7 @@ const SignUp = ({ navigation }) => {
                             marginBottom: 40,
                         }}
                     >
-                        <LoginWithIcon iconName='logo-google' onPress={() => SignInWithGoogle().then(() => ToastAndroid.show("Signed In", ToastAndroid.SHORT))} buttonTitle='Google' />
+                        <LoginWithIcon iconName='logo-google' onPress={() => SignInWithGoogle().then(() => ToastAndroid.show("Signed In With Google", ToastAndroid.SHORT))} buttonTitle='Google' />
                     </View>
                     <TouchableOpacity
                         activeOpacity={0.8}
