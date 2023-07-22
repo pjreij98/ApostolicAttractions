@@ -1,5 +1,5 @@
 import { View, Text, StatusBar, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import COLOURS from '../../../constants/COLOURS'
 import LinearGradient from 'react-native-linear-gradient'
 import { signOutUser } from '../../../utilities/Utilities'
@@ -19,9 +19,14 @@ const Home = () => {
 
     const [matches, setMatches] = useState([])
     const [cardIndex, setCardIndex] = useState(0)
+    const [userIdToken, setUserIdToken] = useState("")
 
 
     const user = auth().currentUser;
+
+    useEffect(async () => {
+        await setUserIdToken(user.getIdToken());
+    }, [])
 
     return (
         <View>
